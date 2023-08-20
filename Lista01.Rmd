@@ -1,0 +1,29 @@
+---
+title: "Lista01"
+author: "Lara"
+date: "2023-08-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(readr)
+library(tidyr)
+library(tidyverse)
+library(stringr)
+library(magrittr)
+library(lubridate)
+library(knitr)
+library(dplyr)
+```
+
+
+```{r, include=FALSE}
+getwd()
+gpa <- read_table("~/Desktop/Analise de Regressao/Atividade/gpa.txt", col_names = FALSE)
+```
+
+```{r}
+head(gpa, n=10)
+```
