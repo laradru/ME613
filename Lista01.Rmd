@@ -60,7 +60,7 @@ summary(model_gpa) #residual standard error = 0.62 (é a raiz do MSE)
 0.62^2 #É o MSE, ou seja, o estimador para a variância, que é 0.38
 anova(model_gpa) #conferindo
 ```
-Faça uma análise gráfica dos resíduos e comente se as suposições do modelo são satisfeitas.
+Faça uma análise gráfica dos resíduos e comente se as suposições do modelo são satisfeitas. (Referência dos códigos dos resíduos: https://drsimonj.svbtle.com/visualising-residuals)
 ```{r}
 gpa$predicted <- predict(model_gpa)# Save the predicted values
 gpa$residuals <- residuals(model_gpa)# Save the residual values
@@ -100,7 +100,7 @@ Teste a hipótese de que existe uma relação linear entre GPA e ACT.
 #H1:slope =!0
 #alfa 5%
 summary (model_gpa)
-# p-valor de ACT (slope) é menor do que Alpha, logo rejeito HO e concluo que beta1 nao é zero. Logo, existe relacao linear entre as variaveis
+# p-valor de ACT (slope) é menor do que Alpha, logo rejeito HO e concluo que beta1 nao é zero. Logo, existe relação linear entre as variáveis.
 ```
 Para alunos com scores no teste ACT igual a 30, obtenha um IC de 95% para o GPA médio.
 ```{r}
