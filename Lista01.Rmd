@@ -25,5 +25,73 @@ gpa <- read_table("~/Desktop/Analise de Regressao/Atividade/gpa.txt", col_names 
 ```
 
 ```{r}
+colnames(gpa) <- c("gpa", "act")
 head(gpa, n=10)
+summary(gpa)
 ```
+
+Obtenha as estimativas de minimos quadrados de beta0chap e beta1chap e escreva a funcao de regressao estimada:
+```{r}
+model_gpa <- lm(gpa ~ act, data = gpa)
+model_gpa$coefficients %>% format(digits = 2)
+
+reta <- function(x_hat){
+  y_hat <- 2.114 + 0.039*x_hat
+  return(y_hat)
+}
+```
+Faça um gráfico de dispersão dos dados e adicione a reta de regressão estimada
+```{r}
+gpa %>% ggplot(aes(x= act, y = gpa)) + geom_point () +
+  geom_abline(intercept = 2.114, slope = 0.039, color = "red" ) +
+  labs(x= "ACT", y = "GPA") +
+  theme_bw()
+```
+
+```{r}
+cor.test(gpa$act, gpa$gpa, method = "pearson", use = "complete.obs")
+```
+Qual é a estimativa pontual da mudança na resposta média quando o score no teste ACT aumenta em um ponto?
+```{r}
+reta(26) - reta(25) #é justamente o slope
+```
+Encontre uma estimativa para variância dos erros σ2.
+```{r}
+
+
+```
+
+```{r}
+
+
+```
+
+```{r}
+
+
+```
+
+
+
+
+```{r}
+plot(model_gpa, which =1, col = c("blue"))
+
+#ou
+
+qqnorm(model_gpa$residuals)
+qqline(model_gpa$residuals, col = c("red"))
+
+```
+
+
+
+```{r}
+
+
+```
+
+
+
+
+
