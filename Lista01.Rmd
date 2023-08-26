@@ -29,7 +29,6 @@ colnames(gpa) <- c("gpa", "act")
 head(gpa, n=10)
 summary(gpa)
 ```
-
 Obtenha as estimativas de minimos quadrados de beta0chap e beta1chap e escreva a funcao de regressao estimada:
 ```{r}
 model_gpa <- lm(gpa ~ act, data = gpa)
@@ -57,41 +56,60 @@ reta(26) - reta(25) #é justamente o slope
 ```
 Encontre uma estimativa para variância dos erros σ2.
 ```{r}
-
-
+summary(model_gpa) #residual standard error = 0.62 (é a raiz do MSE) 
+0.62^2 #É o MSE, ou seja, o estimador para a variância, que é 0.38
+anova(model_gpa) #conferindo
 ```
-
+Faça uma análise gráfica dos resíduos e comente se as suposições do modelo são satisfeitas.
 ```{r}
-
+gpa$predicted <- predict(model_gpa)# Save the predicted values
+gpa$residuals <- residuals(model_gpa)# Save the residual values
+gpa %>% ggplot(aes(x = act, y = gpa)) + geom_smooth(method = "lm", se = FALSE, color = "red") + # regression line
+  geom_segment (aes(xend = act, yend = predicted), alpha = .2) + # draw line from point to line
+  geom_point() + # size of the points
+  guides(color = FALSE, size = FALSE) + # Size legend removed
+  geom_point(aes(y = predicted), shape = 1) +
+  theme_bw()
 
 ```
-
+OU
 ```{r}
-
+gpa %>% ggplot(aes(x = act, y = gpa)) + geom_smooth(method = "lm", se= FALSE, color = "red") + # regression line
+  geom_segment(aes(xend = act, yend = predicted), alpha = 0.2) +# draw line from point to line
+  geom_point(aes(color = abs(residuals), size = abs(residuals))) + # size of the points
+  scale_color_continuous(low = "green", high ="red") + # colour of the points mapped to residual size - green smaller, red large
+  guides(color = FALSE, size = FALSE) +# Size legend removed
+  geom_point(aes(y = predicted), shape = 1)+
+  theme_bw()
 
 ```
-
-
-
-
+Residuals vs Fitted
 ```{r}
-plot(model_gpa, which =1, col = c("blue"))
-
-#ou
-
-qqnorm(model_gpa$residuals)
-qqline(model_gpa$residuals, col = c("red"))
-
+plot(model_gpa, which=1, col = c("blue"))
 ```
 
 
-
+Residuals normality
 ```{r}
-
-
+qqnorm(model_gpa$residuals); qqline(model_gpa$residuals, col = "red")
 ```
 
-
-
-
+Teste a hipótese de que existe uma relação linear entre GPA e ACT.
+```{r}
+#HO: slope = 0
+#H1:slope =!0
+#alfa 5%
+summary (model_gpa)
+# p-valor de ACT (slope) é menor do que Alpha, logo rejeito HO e concluo que beta1 nao é zero. Logo, existe relacao linear entre as variaveis
+```
+Para alunos com scores no teste ACT igual a 30, obtenha um IC de 95% para o GPA médio.
+```{r}
+act_30 <- data.frame(act = 30)
+predict(model_gpa, newdata = act_30, interval = "confidence", level = 0.95)
+```
+Para um novo aluno com score no teste ACT igual a 30, obtenho um IC de 95% para o GPA deste aluno.
+```{r}
+act_30 <- data.frame(act = 30)
+predict(model_gpa, newdata = act_30, interval = "prediction", level = 0.95)
+```
 
