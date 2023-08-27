@@ -1,0 +1,52 @@
+---
+title: "ME613A - Análise de Regressão"
+author: "Profa. Tatiana Benaglia"
+date: "Atividade Prática 01 - 2S2023 - 16/08/2023"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introdução 
+
+Uma empresa de pesquisa (Last Resource, Inc., Bellefonte, PA) fez um estudo para verificar qual a relação entre a idade do motorista e a distância que ele consegue ver. 
+
+Foi coletada uma amostra de $n = 30$ motoristas, na qual perguntaram a idade do motorista e mediram a distância (em pés) que eles conseguiam enxergar bem um sinal de trânsito. Esses dados estão disponíveis no Moodle, no arquivo chamado *signdist.txt*.
+
+
+## Atividade
+
+1. Leia o conjunto de dados no R e faça um gráfico de dispersão para visualizar a relação entre a idade (variável preditora $X$) e distância (variável resposta $Y$).
+
+2. Calcule as estatísticas descritivas das variáveis e também o coeficiente de correlação entre elas.
+
+3. Utilizando o R como uma calculadora simples, calcule as estatísticas de interesse que serão posteriormente utizadas para encontrar os estimadores de $\beta_0$ e $\beta_1$. 
+
+4. Usando as estatísticas do item anterior, escreva uma função que, para um dado conjunto de dados, retorna as estimativas de $\hat \beta_0$ e $\hat \beta_1$. **Nota**: não usar a função `lm()`.
+
+5. Ajuste o modelo de regressão linear simples utilizando a função `lm()` e compare os resultados obtidos no item 3. **Dica**: use as funções `summary()` ou `coef()` para visualizar os coeficientes estimados.
+
+6. Apresente um gráfico de dispersão dos dados juntamente com a reta de regressão ajustada. Escreva um parágrafo com as interpretação dos parâmetros. **Nota**: utilize a função `geom_abline()`. Você não deve usar a função `geom_smooth()`.
+
+7. Utilizando as fórmulas dadas em aula, encontre as estimativas das variâncias de $\varepsilon$, $\beta_0$ e $\beta_1$. Verifique os cálculos com os resultados apresentados na tabela dos coeficientes estimados obtida no R.
+
+8. Encontre os intervalos de confiança de 90% para $\beta_0$ e $\beta_1$ da seguinte forma:
+    (a) usando as fórmulas dadas em aula
+    (b) usando a função `confint()`
+    
+9. Apresente um teste de hipótese para verificar se o coeficiente $\beta_1$ é nulo ou não, usando o seguinte:
+    (a) Teste t
+    (b) Teste F
+
+10. Calcule o coeficiente de determinação $R^2$ e interprete-o.
+
+11. Centralize a variável preditora em sua média e ajuste uma regressão simples novamente. Compare o resultado com aquele obtido no item 4.
+
+12. Se você transformar a distância de pés para metros, como isso afeta os coeficientes da regressão? Note que 1 pé = 0,3048 metros.
+
+
