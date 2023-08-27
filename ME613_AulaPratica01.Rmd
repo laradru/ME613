@@ -3,8 +3,8 @@ title: "ME613A - Análise de Regressão"
 author: "Profa. Tatiana Benaglia"
 date: "Atividade Prática 01 - 2S2023 - 16/08/2023"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 
@@ -49,4 +49,98 @@ Foi coletada uma amostra de $n = 30$ motoristas, na qual perguntaram a idade do 
 
 12. Se você transformar a distância de pés para metros, como isso afeta os coeficientes da regressão? Note que 1 pé = 0,3048 metros.
 
+```{r , echo=FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(readr)
+library(tidyr)
+library(tidyverse)
+library(stringr)
+library(magrittr)
+library(lubridate)
+library(knitr)
+library(dplyr)
+```
+
+```{r , echo=FALSE, message = FALSE}
+mydata <- read_table("~/Desktop/Analise de Regressao/Atividade/signdist.txt")
+```
+
+```{r }
+desc <- function(x){
+  n <- length(x)
+  summary <- summary(x)
+  variance <- var(x)
+  sd <- sd(x)
+  cv <- (sd/mean(x))*100
+  iqr <- IQR(x)
+  return(c(n=n, summary, variance = variance, std.dev = sd, inter.quart.range = iqr, var.coef = cv))
+}
+
+kable(apply(mydata, 2, desc), digits = 2)
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
+
+```{r }
+
+```
 
