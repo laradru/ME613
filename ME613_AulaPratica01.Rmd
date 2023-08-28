@@ -190,25 +190,11 @@ variancia.beta1 <- var.beta1.hat(vetor)
 
 ```{r }
 #Manualmente
-estatisticas <- c(y_barra, x_barra, sum_xiyi, sxx, obs)
-estimadores <- function(estatisticas){
-  hat_beta_1 <- (sum_xiyi - obs*((x_barra)*(y_barra)))/sxx
-  hat_beta_0 <- y_barra - (hat_beta_1*x_barra)
-  estimativas <- c(hat_beta_0, hat_beta_1)
-  return(estimativas)
-  }
 betas<-estimadores(estatisticas)
-
 tcrit <- qt(p = 0.1/2, df = 28, lower.tail = FALSE)
 
-
-infos.ic <- c(betas,variancia.beta0,variancia.beta1, tcrit)
-int.confianca<- function(vetor){
-  
-  
-  return()
-}
-
+c("lower" = betas[1] - tcrit*sqrt(variancia.beta0), "upper" = betas[1] + tcrit*sqrt(variancia.beta0))
+c("lower" = betas[2] - tcrit*sqrt(variancia.beta1), "upper" = betas[2] + tcrit*sqrt(variancia.beta1))
 
 # Usando confint():
 #para beta0 e beta1
