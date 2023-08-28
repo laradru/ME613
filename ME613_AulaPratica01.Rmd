@@ -100,7 +100,7 @@ sum_xi2 <- sum((mydata$Age)*(mydata$Age))
 sxx <- sum(((mydata$Age)-(x_barra))^2)
 obs <- 30
 ```
- retorna as estimativas de $\hat \beta_0$ e $\hat \beta_1$. **Nota**: não usar a função `lm()`.
+ 
 
 ```{r }
 estatisticas <- c(y_barra, x_barra, sum_xiyi, sxx, obs)
