@@ -167,35 +167,75 @@ MSE
 
 ```{r }
 #varbeta0
+vetor<-c(MSE, obs, x_barra, sxx)
 
+var.beta0.hat <- function(vetor){
+  var <- MSE*((1/obs)+(((x_barra)^2)/sxx))
+  return(var)
+}
 
+variancia.beta0 <- var.beta0.hat(vetor)
+
+```
+
+```{r }
 #varbeta1
+var.beta1.hat <- function(vetor){
+  var <- MSE*(1/sxx)
+  return(var)
+}
 
+variancia.beta1 <- var.beta1.hat(vetor)
 ```
 
 ```{r }
+#Manualmente
+estatisticas <- c(y_barra, x_barra, sum_xiyi, sxx, obs)
+estimadores <- function(estatisticas){
+  hat_beta_1 <- (sum_xiyi - obs*((x_barra)*(y_barra)))/sxx
+  hat_beta_0 <- y_barra - (hat_beta_1*x_barra)
+  estimativas <- c(hat_beta_0, hat_beta_1)
+  return(estimativas)
+  }
+betas<-estimadores(estatisticas)
 
+tcrit <- qt(p = 0.1/2, df = 28, lower.tail = FALSE)
+
+
+infos.ic <- c(betas,variancia.beta0,variancia.beta1, tcrit)
+int.confianca<- function(vetor){
+  
+  
+  return()
+}
+
+
+# Usando confint():
+#para beta0 e beta1
+confint(model_distancia, level=0.90)
 ```
 
-```{r }
-
-```
-
-```{r }
-anova()
-```
-8. Encontre os intervalos de confiança de 90% para $\beta_0$ e $\beta_1$ da seguinte forma:
-    (a) usando as fórmulas dadas em aula
-    (b) usando a função `confint()`
-    
 9. Apresente um teste de hipótese para verificar se o coeficiente $\beta_1$ é nulo ou não, usando o seguinte:
     (a) Teste t
     (b) Teste F
+```{r }
 
-10. Calcule o coeficiente de determinação $R^2$ e interprete-o.
+```
+
+```{r }
+r <- cor(x=mydata$Age, y=mydata$Distance)
+r
+
+r2 <- r^2 
+r2 # 64% da variancia dos dados é explicado pelo modelo
+```
 
 11. Centralize a variável preditora em sua média e ajuste uma regressão simples novamente. Compare o resultado com aquele obtido no item 4.
 
+```{r }
+
+```
+    
 12. Se você transformar a distância de pés para metros, como isso afeta os coeficientes da regressão? Note que 1 pé = 0,3048 metros.
 ```{r }
 
