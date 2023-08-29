@@ -65,7 +65,7 @@ library(dplyr)
 ```{r , echo=FALSE, message = FALSE}
 mydata <- read_table("~/Desktop/Analise de Regressao/Atividade/signdist.txt")
 ```
-
+2. Calcule as estatísticas descritivas das variáveis e também o coeficiente de correlação entre elas.
 ```{r }
 desc <- function(x){
   n <- length(x)
@@ -79,7 +79,7 @@ desc <- function(x){
 
 kable(apply(mydata, 2, desc), digits = 2)
 ```
-
+1. Leia o conjunto de dados no R e faça um gráfico de dispersão para visualizar a relação entre a idade (variável preditora $X$) e distância (variável resposta $Y$).
 ```{r }
 mydata %>% ggplot(aes(x=Age, y=Distance)) + geom_point() +
   labs(x= "Idade", y= "Distância") +
@@ -89,7 +89,7 @@ mydata %>% ggplot(aes(x=Age, y=Distance)) + geom_point() +
 ```{r }
 cor(x=mydata$Age, y=mydata$Distance)
 ```
-
+3. Utilizando o R como uma calculadora simples, calcule as estatísticas de interesse que serão posteriormente utizadas para encontrar os estimadores de $\beta_0$ e $\beta_1$. 
 ```{r }
 y_barra <- mean(mydata$Distance)
 x_barra <- mean(mydata$Age)
@@ -101,7 +101,7 @@ sxx <- sum(((mydata$Age)-(x_barra))^2)
 obs <- 30
 ```
  
-
+4. Usando as estatísticas do item anterior, escreva uma função que, para um dado conjunto de dados, retorna as estimativas de $\hat \beta_0$ e $\hat \beta_1$. **Nota**: não usar a função `lm()`.
 ```{r }
 estatisticas <- c(y_barra, x_barra, sum_xiyi, sxx, obs)
 estimadores <- function(estatisticas){
@@ -112,7 +112,7 @@ estimadores <- function(estatisticas){
   }
 estimadores(estatisticas)
 ```
-
+5. Ajuste o modelo de regressão linear simples utilizando a função `lm()` e compare os resultados obtidos no item 3. **Dica**: use as funções `summary()` ou `coef()` para visualizar os coeficientes estimados.
 ```{r }
 model_distancia <- lm(Distance ~ Age, data = mydata)
 summary(model_distancia)
@@ -130,6 +130,8 @@ sum(residuals(model_distancia)^2)/(30-2)
 #modo2
 summary(model_distancia)$sigma^2
 ```
+6. Apresente um gráfico de dispersão dos dados juntamente com a reta de regressão ajustada. Escreva um parágrafo com as interpretação dos parâmetros. **Nota**: utilize a função `geom_abline()`. Você não deve usar a função `geom_smooth()`.
+
 # Com abline
 ```{r }
 mydata %>% ggplot(aes(x=Age, y=Distance)) + geom_point() +
@@ -144,7 +146,7 @@ mydata %>% ggplot(aes(x=Age, y=Distance)) + geom_point() +
   labs(x= "Idade", y= "Distância") +
   theme_bw()
 ```
-
+7. Utilizando as fórmulas dadas em aula, encontre as estimativas das variâncias de $\varepsilon$, $\beta_0$ e $\beta_1$. Verifique os cálculos com os resultados apresentados na tabela dos coeficientes estimados obtida no R.
 ```{r }
 #varepsilon = MSE
 y.estimado<- function(x){
@@ -187,7 +189,9 @@ var.beta1.hat <- function(vetor){
 
 variancia.beta1 <- var.beta1.hat(vetor)
 ```
-
+8. Encontre os intervalos de confiança de 90% para $\beta_0$ e $\beta_1$ da seguinte forma:
+    (a) usando as fórmulas dadas em aula
+    (b) usando a função `confint()`
 ```{r }
 #Manualmente
 betas<-estimadores(estatisticas)
@@ -203,17 +207,68 @@ confint(model_distancia, level=0.90)
 
 9. Apresente um teste de hipótese para verificar se o coeficiente $\beta_1$ é nulo ou não, usando o seguinte:
     (a) Teste t
-    (b) Teste F
+   
 ```{r }
+#H0: beta1 = 0
+#H1: beta1 !=0
+#alfa: 5%
 
+#Manual
+tobservado <-betas[2]/sqrt(MSE/sxx)
+tcritico <- qt(p = 0.05/2, df = obs-2, lower.tail = FALSE)
+teste_t<- function(tobservado, tcritico){
+  if(abs(tobservado) > tcrit) {
+    print("Rejeito H0 considerando o nível de significancia de 5%")}
+  else{
+    print("Não rejeito H0 considerando o nível de significancia de 5%")}
+  }
+teste_t(tobservado,tcritico)
+
+#t-Test
+model_distancia <- lm(Distance ~ Age, data = mydata)
+summary(model_distancia)
+```
+ (b) Teste F
+```{r }
+#H0: beta1 = 0
+#H1: beta1 !=0
+#alfa: 5%
+
+#Manual
+y.estimado<- function(x){
+  y_hat<-rep(0, length(x))
+  for (i in 1:length(x)){
+    y_hat[i] <- 576.6819 - 3.0068*x[i]
+  }
+  return(y_hat)
+}
+mydata$y_hat <- y.estimado(mydata$Age)
+MSE <- (sum(((mydata$Distance) - (mydata$y_hat))^2))/(obs-2)
+
+MSReg <-(sum(((mydata$y_hat) - (y_barra))^2))/(1)
+f.observado <- MSReg/MSE
+f.critico <- qf(p=0.05, df1 = 1, df2 = 28, lower.tail = FALSE)
+test_f <- function(f.observado, f.critico){
+  if(abs(f.observado) > f.critico) {
+    print("Rejeito H0 considerando o nível de significancia de 5%")}
+  else{
+    print("Não rejeito H0 considerando o nível de significancia de 5%")}
+}
+
+test_f(f.observado,f.critico)
+
+#test-F
+model_distancia <- lm(Distance ~ Age, data = mydata)
+summary(model_distancia)
 ```
 
+10. Calcule o coeficiente de determinação $R^2$ e interprete-o.
 ```{r }
 r <- cor(x=mydata$Age, y=mydata$Distance)
 r
 
 r2 <- r^2 
-r2 # 64% da variancia dos dados é explicado pelo modelo
+r2 # 64% da variabilidade da distancia é explicado pela idade
 ```
 
 11. Centralize a variável preditora em sua média e ajuste uma regressão simples novamente. Compare o resultado com aquele obtido no item 4.
@@ -223,10 +278,6 @@ r2 # 64% da variancia dos dados é explicado pelo modelo
 ```
     
 12. Se você transformar a distância de pés para metros, como isso afeta os coeficientes da regressão? Note que 1 pé = 0,3048 metros.
-```{r }
-
-```
-
 ```{r }
 
 ```
