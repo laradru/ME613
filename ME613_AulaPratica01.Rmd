@@ -282,7 +282,28 @@ summary(model.distancia.xcentralizada)
 ```
     
 12. Se você transformar a distância de pés para metros, como isso afeta os coeficientes da regressão? Note que 1 pé = 0,3048 metros.
+#Distancia em pés
 ```{r }
-
+summary(model_distancia)
+```
+```{r }
+mydata %>% ggplot(aes(x=Age, y=Distance)) + geom_point() +
+  geom_abline(intercept = 576.6819, slope = -3.0068, col = "red") +
+  labs(x= "Idade", y= "Distância") +
+  theme_bw()
 ```
 
+#Distancia em metros
+```{r }
+mydata$Distance.metros <- mydata$Distance * 0.3048 
+
+model_distancia_metros <- lm(Distance.metros ~ Age, data= mydata)
+summary(model_distancia_metros)
+```
+```{r }
+mydata %>% ggplot(aes(x=Age, y=Distance.metros)) + geom_point() +
+  geom_abline(intercept = 175.7727, slope = -0.9165, col = "red") +
+  labs(x= "Idade", y= "Distância") +
+  theme_bw()
+```
+Houve mudança nos valores dos coeficientes, tanto beta0 quanto beta1. Porém, ao analisar a dispersão dos dados, vemos que os gráficos são os mesmos. Houve mudança da escala em y, por conta da mudança da unidade de medida, e a mudança dos coeficientes ocorreram para "acompanhar" a mudança de unidade da variavel (de pés para metros) que foi imposta pelo exercicio.
