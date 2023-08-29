@@ -272,9 +272,13 @@ r2 # 64% da variabilidade da distancia é explicado pela idade
 ```
 
 11. Centralize a variável preditora em sua média e ajuste uma regressão simples novamente. Compare o resultado com aquele obtido no item 4.
-
 ```{r }
+mydata$Age_centralizada <- mydata$Age - x_barra
 
+model.distancia.xcentralizada <- lm(Distance ~ Age_centralizada, data = mydata)
+summary(model.distancia.xcentralizada)
+
+#A única mudança foi em relação ao beta0. Beta1 permaneceu inalterado
 ```
     
 12. Se você transformar a distância de pés para metros, como isso afeta os coeficientes da regressão? Note que 1 pé = 0,3048 metros.
