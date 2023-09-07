@@ -62,26 +62,34 @@ galton %>% ggplot(aes(x= midparentHeight, y=childHeight)) + geom_point() +
   theme_bw()
 ```
 
+Achando a reta de regressão estimada:
+```{r}
+model.altura<- lm(childHeight ~ midparentHeight, data = galton)
+model.altura
+```
+Colocando a reta de regressao estimada no grafico
+```{r}
+galton %>% ggplot(aes(x= midparentHeight, y=childHeight)) + geom_point() +
+  geom_smooth(method = "lm", se = FALSE, col = "red")+
+  labs(x= "parent height", y = "children height")+
+  theme_bw()
+```
 
 
 
+```{r}
+
+```
 
 
+```{r}
+
+```
 
 
+```{r}
 
-
-
-
-
-
-
-
-
-
-
-
-
+```
 
 
 
