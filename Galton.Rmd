@@ -1,0 +1,94 @@
+---
+title: "Galton"
+author: "Lara"
+date: "2023-09-07"
+output: html_document
+---
+
+```{r , echo=FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(readr)
+library(tidyr)
+library(tidyverse)
+library(stringr)
+library(magrittr)
+library(lubridate)
+library(knitr)
+library(dplyr)
+```
+
+# data upload
+```{r , echo=FALSE, message = FALSE}
+galton <- read_delim("~/Desktop/Analise de Regressao/Atividade/galton.csv")
+head(galton)
+```
+# Altura dos filhos
+Histograma dos filhos
+```{r}
+galton %>% ggplot(aes(x= childHeight)) + geom_histogram(bins = 13 , colour = "black", fill = "grey") +
+  labs(x= "child height", y = "f")+
+  theme_bw()
+```
+
+
+Testando na raça, mudando valores de mu pois slider não está funcionando. Com mu=66.7 temos o menor MSE, que é MSE=12.79
+```{r}
+library(manipulate)
+library(UsingR)
+myHist <- function(mu){
+  mse <- mean(((galton$childHeight) - mu)^2)
+  galton %>% ggplot(aes(x= childHeight)) + geom_histogram(bins = 13 , col = "black", fill = "grey") +
+    geom_vline(xintercept = mu, size = 1) +
+    labs(x= "child height", y = "f")+
+    ggtitle(paste("mu = ", mu, ", MSE = ", round(mse, 2), sep = ""))+
+  theme_bw()
+}
+
+manipulate(myHist(mu), mu = slider(62, 74, step = 0.5)). #Bug no comando slider
+```
+
+# Com altura dos pais, será que consegue  uma predição melhor?
+Histograma da altura dos pais
+```{r}
+galton %>% ggplot(aes(x= midparentHeight)) + geom_histogram(bins = 13 , colour = "black", fill = "grey") +
+  labs(x= "parent height", y = "f")+
+  theme_bw()
+```
+Dispersão altura pais x altura filhos
+```{r}
+galton %>% ggplot(aes(x= midparentHeight, y=childHeight)) + geom_point() +
+  labs(x= "parent height", y = "children height")+
+  theme_bw()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
