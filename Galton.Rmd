@@ -39,13 +39,13 @@ library(UsingR)
 myHist <- function(mu){
   mse <- mean(((galton$childHeight) - mu)^2)
   galton %>% ggplot(aes(x= childHeight)) + geom_histogram(bins = 13 , col = "black", fill = "grey") +
-    geom_vline(xintercept = mu, size = 1) +
+    geom_vline(xintercept = mu, linewidth = 1) +
     labs(x= "child height", y = "f")+
     ggtitle(paste("mu = ", mu, ", MSE = ", round(mse, 2), sep = ""))+
   theme_bw()
 }
 
-manipulate(myHist(mu), mu = slider(62, 74, step = 0.5)). #Bug no comando slider
+manipulate(myHist(mu), mu = slider(62, 74, step = 0.5)) #Bug no comando slider
 ```
 
 # Com altura dos pais, será que consegue  uma predição melhor?
