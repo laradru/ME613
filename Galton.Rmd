@@ -74,16 +74,13 @@ galton %>% ggplot(aes(x= midparentHeight, y=childHeight)) + geom_point() +
   labs(x= "parent height", y = "children height")+
   theme_bw()
 ```
-
-
-
 ```{r}
-
+summary(model.altura)
 ```
 
-
+IC para os coeficientes
 ```{r}
-
+confint(model.altura, level=0.95)
 ```
 
 
