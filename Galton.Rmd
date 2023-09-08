@@ -74,6 +74,8 @@ galton %>% ggplot(aes(x= midparentHeight, y=childHeight)) + geom_point() +
   labs(x= "parent height", y = "children height")+
   theme_bw()
 ```
+
+Verificando os estimadores e Std Errors
 ```{r}
 summary(model.altura)
 ```
@@ -88,11 +90,17 @@ confint(model.altura, level=0.95)
 
 ```
 
+```{r}
 
+```
 
+```{r}
 
+```
 
+```{r}
 
+```
 
 
 
