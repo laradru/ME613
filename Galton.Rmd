@@ -76,6 +76,7 @@ galton %>% ggplot(aes(x= midparentHeight, y=childHeight)) + geom_point() +
 ```
 
 Verificando os estimadores e Std Errors
+# teste de hipotese teste-t. Aqui também solta teste F, mas não a tabela anova.
 ```{r}
 summary(model.altura)
 ```
@@ -88,8 +89,9 @@ confint(model.altura, level=0.95)
 Interpretação de beta1: para cada 0.63polegadas da altura dos pais, vemos um aumento de 22polegadas na altura dos filhos.
 
 
+# Além do teste t observado no item anterior, para testar se beta1 = 0, podemos usar o contexto da ANOVa para a mesma finalidade, neste caso usando o teste F.
 ```{r}
-
+anova(model.altura)
 ```
 
 ```{r}
