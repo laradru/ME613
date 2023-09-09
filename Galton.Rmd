@@ -85,6 +85,8 @@ IC para os coeficientes
 confint(model.altura, level=0.95)
 ```
 
+Interpretação de beta1: para cada 0.63polegadas da altura dos pais, vemos um aumento de 22polegadas na altura dos filhos.
+
 
 ```{r}
 
