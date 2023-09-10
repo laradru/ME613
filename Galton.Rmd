@@ -125,9 +125,9 @@ Galton %>% ggplot(aes(x= midparentHeight, y=childHeight)) + geom_point() +
   labs(x= "parent height", y = "children height")+
   theme_bw()
 ```
-```{r}
-# usando a função geom_ribbon:
 
+usando a função geom_ribbon:
+```{r}
 Galton %>% ggplot(aes(x=midparentHeight, y=childHeight)) + geom_point() +
   geom_smooth(aes(fill = "Confianca"), method = "lm", se = TRUE, col = "red")+
   geom_ribbon(aes(ymin = lwr, ymax = upr, fill = "Predicao"), color = "blue", size = 1, alpha = 0, linetype= 2) +
