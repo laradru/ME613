@@ -24,19 +24,19 @@ library(dplyr)
 library(ALSM)
 data(TolucaCompany)
 View(TolucaCompany)
-colnames(TolucaCompany) <- c("size", "hour")
+colnames(TolucaCompany) <- c("tamanho", "hour")
 ```
 
 # Dispersão
 ```{r}
-TolucaCompany %>% ggplot(aes(x= size, y= hour)) + geom_point() +
+TolucaCompany %>% ggplot(aes(x= tamanho, y= hour)) + geom_point() +
   labs(x= "tamanho do lote", y = "horas trabalhadas para produzir o lote")+
   theme_bw()
 
 ```
 # Ajustar Modelo de Regressao
 ```{r}
-model.Toluca <- lm(hour ~ size, data = TolucaCompany)
+model.Toluca <- lm(hour ~ tamanho, data = TolucaCompany)
 ```
 
 ```{r}
@@ -65,7 +65,7 @@ MSE <- tab.anova[2, 4]
 
 # Grafico com a reta de regressao ajustada
 ```{r}
-TolucaCompany %>% ggplot(aes(x= size, y= hour)) + geom_point() +
+TolucaCompany %>% ggplot(aes(x= tamanho, y= hour)) + geom_point() +
   geom_smooth(method = "lm", se = FALSE)+
   labs(x= "tamanho do lote", y = "horas trabalhadas para produzir o lote")+
   theme_bw()
@@ -88,7 +88,7 @@ TolucaCompany$st_residuos <- rstudent(model.Toluca)
 ```
 
 ```{r}
-TolucaCompany %>% ggplot(aes(x= size, y= residuos)) + 
+TolucaCompany %>% ggplot(aes(x= tamanho, y= residuos)) + 
   geom_point(col = "black", size = 1, alpha= 0.6) +
   geom_hline(yintercept = 0, col = "red", linetype = "dashed")+
   labs(x= "valores x", y = "residuos")+
@@ -119,7 +119,7 @@ TolucaCompany %>% ggplot(aes(x= preditos, y= st_residuos)) +
 Forma 1
 ```{r}
 qqnorm(TolucaCompany$residuos)
-qqline(TolucaCompany$residuos, col = "red"  )
+qqline(TolucaCompany$residuos, col = "red")
 ```
 Forma 2
 ```{r}
@@ -186,13 +186,39 @@ Ou seja, nao posso rejeitar H0. Nao há falta de ajuste
 ```
 
 
+Depois de verificar as suposições do modelo através da análise dos resíduos, faça agora um teste de hipótese para checar se a relação linear entre size e hours é significativa.
+# Via teste t-student bilateral:
+H0: beta1 = 0; H1: beta1 !=0
+alfa: 5%
+
+estatist teste:  beta1_hat - 0 /srqt(var(beta1_hat)) =   beta1_hat /srqt(sigma^2/SXX)  =  beta1_hat /srqt(MSE/SXX)
+```{r}
+summary(model.Toluca)$coef
+```
 
 ```{r}
+ 3.570202/0.3469722
+#REJEITO H0
+```
 
+Qual é a qntade horas médias de trabalho cujos lotes possuem 80 e 50 de tamanho, respectivamente. Apresente também um intervalo de 95% de confiança para estes casos e compare-os. Dica: usar a função predict().
+```{r}
+newsize <- data.frame(tamanho = c(80,50))
+predict(model.Toluca, newdata = newsize, interval = "confidence", level = 0.95)
 ```
 
 
 ```{r}
 
 ```
+
+
+```{r}
+
+```
+
+
+
+
+
 
