@@ -200,21 +200,32 @@ summary(model.Toluca)$coef
  3.570202/0.3469722
 #REJEITO H0
 ```
-
+# Estimacao x Predicao
 Qual é a qntade horas médias de trabalho cujos lotes possuem 80 e 50 de tamanho, respectivamente. Apresente também um intervalo de 95% de confiança para estes casos e compare-os. Dica: usar a função predict().
 ```{r}
 newsize <- data.frame(tamanho = c(80,50))
 predict(model.Toluca, newdata = newsize, interval = "confidence", level = 0.95)
 ```
 
-
+Para um novo lote, qual a estimativa de horas dado que seu tamanho é 80 e 50, respectivamente. Apresente também um intervalo de predição de 95% para esses casos. Compare com os intervalos de confiança obtidos no item anterior. Dica: usar a função predict() modificando o arguemnto interval.
 ```{r}
-
+newsize <- data.frame(tamanho = c(80,50))
+predict(model.Toluca, newdata = newsize, interval = "prediction", level = 0.95)
 ```
 
-
+gráfico de dispersão, juntamente com a reta ajustada e a banda de confiança para estimação da resposta média e o intervalo de predição para uma nova observação, ambos com nível de confiança de 95%.
 ```{r}
+ip <- predict(model.Toluca, interval = "prediction", level = 0.95)
 
+Toluca <- cbind(TolucaCompany, ip)
+
+
+Toluca%>% ggplot(aes(x=tamanho, y=hour)) + geom_point() +
+  geom_smooth(aes(fill = "Confianca"), method = "lm", se = TRUE, col = "red")+
+  geom_ribbon(aes(ymin = lwr, ymax = upr, fill = "Predicao"), color = "blue", size = 1, alpha = 0, linetype= 2) +
+  labs(x= "tamanho", y = "horas")+
+  scale_fill_manual("Tipo de intervalo", values = c("grey", "blue")) +
+  theme_bw()
 ```
 
 
