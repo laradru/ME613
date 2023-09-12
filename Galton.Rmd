@@ -135,4 +135,42 @@ Galton %>% ggplot(aes(x=midparentHeight, y=childHeight)) + geom_point() +
   scale_fill_manual("Tipo de intervalo", values = c("grey", "blue")) +
   theme_bw()
 ```
+# Aqui mostra apenas uma transformação dos dados (x - meanx) que poderia ajudar na interpretação do BETA0. Poderia tb mudar a escala, fazendo * 10. Perceba que o BETA1 nao se altera!!
+```{r}
+lm(childHeight ~ midparentHeight, data = galton)
+lm(childHeight ~ I(midparentHeight - mean(midparentHeight)) * 10, data = galton)
+```
+Vemos que a altura media para pais de tamanho medio é 66.74 (Yi_hat = y_barra + (beta1_hat)* (Xi-X_barra)). Beta0 sendo a média.
+
+
+```{r}
+
+
+```
+
+
+
+```{r}
+
+
+```
+
+
+```{r}
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
