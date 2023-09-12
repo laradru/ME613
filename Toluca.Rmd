@@ -36,13 +36,113 @@ TolucaCompany %>% ggplot(aes(x= size, y= hour)) + geom_point() +
 ```
 # Ajustar Modelo de Regressao
 ```{r}
+model.Toluca <- lm(hour ~ size, data = TolucaCompany)
+```
 
+```{r}
+summary(model.Toluca)
+```
+
+# Tabela ANOVA
+```{r}
+anova(model.Toluca)
+
+```
+
+```{r}
+tab.anova <- anova(model.Toluca)
+SSReg <- tab.anova[1, 3]
+SSE <- tab.anova[2, 3]
+SSTO <- sum(tab.anova$`Sum Sq`)
+x<- c("SSReg" = SSReg, "SSE" = SSE, "SSTO"= SSTO)
+
+kable(x, col.names = "valor" , digits = 2, caption = "SS")
+```
+
+# Grafico com a reta de regressao ajustada
+```{r}
+TolucaCompany %>% ggplot(aes(x= size, y= hour)) + geom_point() +
+  geom_smooth(method = "lm", se = FALSE)+
+  labs(x= "tamanho do lote", y = "horas trabalhadas para produzir o lote")+
+  theme_bw()
+```
+
+```{r}
+model.Toluca$coefficients
+```
+
+Interpretação de beta1:  para cada 1 unidade que aumentamos o lote, o valor de horas trabalhadas aumenta em 3.6 horas.
+Interpretacao de beta0: se o tamanho do lote fosse zero, teria que traalhar 62h, o que não tem muito sentido prático.
+
+
+#Analise de Residuos
+Residuos x Var preditora
+```{r}
+TolucaCompany$residuos <- residuals(model.Toluca)
+TolucaCompany$preditos <- fitted(model.Toluca)
+```
+
+```{r}
+TolucaCompany %>% ggplot(aes(x= size, y= residuos)) + 
+  geom_point(col = "black", size = 1, alpha= 0.6) +
+  geom_hline(yintercept = 0, col = "red", linetype = "dashed")+
+  labs(x= "valores x", y = "residuos")+
+  theme_bw()
+```
+
+
+Residuos x Val preditivos
+```{r}
+TolucaCompany %>% ggplot(aes(x= preditos, y= residuos)) + 
+  geom_point(col = "black", size = 1, alpha= 0.6) +
+  geom_hline(yintercept = 0, col = "red", linetype = "dashed")+
+  labs(x= "preditos", y = "residuos")+
+  theme_bw()
+
+```
+
+#Os residuos sao normais?
+```{r}
 
 ```
 
 ```{r}
 
+```
+
+```{r}
 
 ```
 
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
 
