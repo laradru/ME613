@@ -57,6 +57,10 @@ SSTO <- sum(tab.anova$`Sum Sq`)
 x<- c("SSReg" = SSReg, "SSE" = SSE, "SSTO"= SSTO)
 
 kable(x, col.names = "valor" , digits = 2, caption = "SS")
+
+# A estimativa da var sigmaˆ2 = MSE:
+MSE <- tab.anova[2, 4]
+
 ```
 
 # Grafico com a reta de regressao ajustada
@@ -80,6 +84,7 @@ Residuos x Var preditora
 ```{r}
 TolucaCompany$residuos <- residuals(model.Toluca)
 TolucaCompany$preditos <- fitted(model.Toluca)
+TolucaCompany$st_residuos <- rstudent(model.Toluca)
 ```
 
 ```{r}
@@ -100,41 +105,86 @@ TolucaCompany %>% ggplot(aes(x= preditos, y= residuos)) +
   theme_bw()
 
 ```
+Residuos studentizados x Val preditivos
+```{r}
+TolucaCompany %>% ggplot(aes(x= preditos, y= st_residuos)) + 
+  geom_point(col = "black", size = 1, alpha= 0.6) +
+  geom_hline(yintercept = 0, col = "red", linetype = "dashed")+
+  labs(x= "preditos", y = "residuos studentizados")+
+  theme_bw()
+
+```
 
 #Os residuos sao normais?
+Forma 1
 ```{r}
+qqnorm(TolucaCompany$residuos)
+qqline(TolucaCompany$residuos, col = "red"  )
+```
+Forma 2
+```{r}
+TolucaCompany %>% ggplot(aes(sample = residuos)) + 
+  stat_qq(col = "black", size = 1, alpha= 0.6) +
+  stat_qq_line(col = "red", linetype = "dashed")+
+  labs(title = "qqplot")+
+  theme_bw()
 
+
+# ou
+
+TolucaCompany %>% ggplot(aes(sample = st_residuos)) + 
+  stat_qq(col = "black", size = 1, alpha= 0.6) +
+  stat_qq_line(col = "red", linetype = "dashed")+
+  labs(title = "qqplot", x = "quantis teoricos", y = "quantis amostrais")+
+  theme_bw()
+```
+Histograma dos residuos
+```{r}
+TolucaCompany %>% ggplot(aes(x= residuos)) + 
+  geom_histogram(bins = 8, color= "black", fill= "grey")+
+  labs(title = "qqplot")+
+  theme_bw()
 ```
 
+Boxplot
 ```{r}
-
+TolucaCompany %>% ggplot(aes(x= residuos)) + 
+  geom_boxplot()+
+  labs(title = "qqplot")+
+  theme_bw()
 ```
 
+Forma 3 - testes estatisticos
+Shapiro
+H0: os res possuem dist normal; H1: nao possuem
+alfa: 5%
 ```{r}
+shapiro.test(TolucaCompany$residuos)
+```
 
+#Os residuos sao homocedasticos?
+H0: os residuos sao homocedasticos; H1: nao sao
+alfa: 5%
+```{r}
+library(car)
+ncvTest(model.Toluca)
 ```
 
 
+# Falta de ajuste
+É possível aplicar o teste F de falta de ajuste para esse dados? Se sim, apresente a tabela ANOVA com a decomposição da SQE em SQFA e SQEp. 
+R: Sim, pois existem replicacoes em x (variavel preditora)
 ```{r}
-
+library(EnvStats)
+anovaPE(model.Toluca)
+```
+Indique quais hipóteses estão sendo testadas, a estatística do teste e conclusão.
+h0: nao existe falta de ajuste (modelo é razoável); h1: existe falta de ajuste
+Ou seja, nao posso rejeitar H0. Nao há falta de ajuste
+```{r}
+#Fcal = MSLF/MSPE = (SSLF/c-2) - (SSPE/n-c) = 17245/9 / 37581/14 =  0.7138 
 ```
 
-
-```{r}
-
-```
-
-
-
-```{r}
-
-```
-
-
-
-```{r}
-
-```
 
 
 ```{r}
