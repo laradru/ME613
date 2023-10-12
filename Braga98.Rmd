@@ -30,7 +30,7 @@ head(braga)
 braga <- braga %>% drop_na() 
 braga$Carga <- as.integer(braga$Carga)
 braga$VO2 <- as.integer(braga$VO2)
-
+braga$Altura <- as.integer(braga$Altura)
 ```
 
 Será que a carga utilizada na esteira explica a variação do consumo de oxigenio  para pacientes com diferentes etiologias de insuficiencia cardíaca?
@@ -63,9 +63,24 @@ braga %>% ggplot(aes(x= Carga, y=VO2)) + geom_point(aes(color = Etiologia)) +
   theme_bw()
 ```
 
+# Codificando variáveis qualitativas
+```{r}
+braga %<>% mutate(Sexo.cod = ifelse(Sexo == "M", 0, 1))
+braga %<>% mutate(Etiologia.cod = ifelse(Etiologia == "C", 0, ifelse(Etiologia == "CH", 1, ifelse(Etiologia == "ID", 2, 3))))
+```
 
+# Dispersoes entre as n variáveis (2 a 2):
+```{r}
+library(GGally)
+braga %>% ggpairs(columns = c("VO2", "Carga", "IMC", "Superficie", "Peso", "Altura", "Idade", "Sexo.cod", "Etiologia.cod"), upper = list(continuous = wrap("cor", size = 2)))
+```
 
-
-
-
+# Ajustando um modelo (com todos os preditores):
+```{r}
+model.braga2<- lm(VO2 ~ ., data = braga)
+model.braga2
+```
+```{r}
+summary(model.braga2)
+```
 
