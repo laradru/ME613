@@ -19,13 +19,13 @@ library(knitr)
 library(dplyr)
 ```
 
-# data upload - FM-USP
+# Data upload - FM-USP
 ```{r , echo=FALSE, message = FALSE}
 braga <- read_xlsx("~/Desktop/Analise de Regressao/Atividade/ME613_parte10_Braga1998.xlsx", sheet = "Dta_LAN", col_names = TRUE)
 
 head(braga)
 ```
-# cleaning
+# Cleaning
 ```{r }
 braga <- braga %>% drop_na() 
 braga$Carga <- as.integer(braga$Carga)
@@ -36,7 +36,7 @@ braga$VO2 <- as.integer(braga$VO2)
 Será que a carga utilizada na esteira explica a variação do consumo de oxigenio  para pacientes com diferentes etiologias de insuficiencia cardíaca?
 V02 = beta0 + beta1 Carga + beta2 Etiologia + E
 
-#Gráfico de dispersão carga x VO2
+# Gráfico de dispersão carga x VO2
 ```{r}
 braga %>% ggplot(aes(x= Carga, y=VO2)) + geom_point() +
   labs(x= "Carga", y = "VO2")+
@@ -49,7 +49,19 @@ braga %>% ggplot(aes(x= Carga, y=VO2)) + geom_point(aes(color = Etiologia)) +
   theme_bw()
 ```
 
-
+# Ajustando um modelo linear simples (1 preditor):
+Achando a reta de regressão estimada:
+```{r}
+model.braga<- lm(VO2 ~ Carga, data = braga)
+model.braga
+```
+Colocando a reta de regressao estimada no grafico
+```{r}
+braga %>% ggplot(aes(x= Carga, y=VO2)) + geom_point(aes(color = Etiologia)) +
+  geom_smooth(method = "lm", se = FALSE, col = "red")+
+  labs(x= "Carga", y = "VO2")+
+  theme_bw()
+```
 
 
 
