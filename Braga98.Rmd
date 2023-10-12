@@ -1,0 +1,59 @@
+---
+title: "Braga1998"
+author: "Lara"
+date: "2023-10-11"
+output: html_document
+---
+
+```{r , echo=FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(readr)
+library(readxl)
+library(tidyr)
+library(tidyverse)
+library(stringr)
+library(magrittr)
+library(lubridate)
+library(knitr)
+library(dplyr)
+```
+
+# data upload - FM-USP
+```{r , echo=FALSE, message = FALSE}
+braga <- read_xlsx("~/Desktop/Analise de Regressao/Atividade/ME613_parte10_Braga1998.xlsx", sheet = "Dta_LAN", col_names = TRUE)
+
+head(braga)
+```
+# cleaning
+```{r }
+braga <- braga %>% drop_na() 
+braga$Carga <- as.integer(braga$Carga)
+braga$VO2 <- as.integer(braga$VO2)
+
+```
+
+Será que a carga utilizada na esteira explica a variação do consumo de oxigenio  para pacientes com diferentes etiologias de insuficiencia cardíaca?
+V02 = beta0 + beta1 Carga + beta2 Etiologia + E
+
+#Gráfico de dispersão carga x VO2
+```{r}
+braga %>% ggplot(aes(x= Carga, y=VO2)) + geom_point() +
+  labs(x= "Carga", y = "VO2")+
+  theme_bw()
+```
+Colorindo por etiologia:
+```{r}
+braga %>% ggplot(aes(x= Carga, y=VO2)) + geom_point(aes(color = Etiologia)) +
+  labs(x= "Carga", y = "VO2")+
+  theme_bw()
+```
+
+
+
+
+
+
+
+
+
