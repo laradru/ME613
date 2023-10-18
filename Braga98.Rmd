@@ -55,6 +55,10 @@ Achando a reta de regressão estimada:
 model.braga<- lm(VO2 ~ Carga, data = braga)
 model.braga
 ```
+```{r}
+summary(model.braga)
+```
+
 Colocando a reta de regressao estimada no grafico
 ```{r}
 braga %>% ggplot(aes(x= Carga, y=VO2)) + geom_point(aes(color = Etiologia)) +
@@ -77,10 +81,84 @@ braga %>% ggpairs(columns = c("VO2", "Carga", "IMC", "Superficie", "Peso", "Altu
 
 # Ajustando um modelo (com todos os preditores):
 ```{r}
-model.braga2<- lm(VO2 ~ ., data = braga)
-model.braga2
+model.bragat<- lm(VO2 ~ ., data = braga)
+model.bragat
 ```
 ```{r}
+summary(model.bragat)
+```
+
+
+# Dispersão com 2 preditores (Carga e Peso):
+```{r}
+library("scatterplot3d")
+scatterplot3d(braga[,c(9,6,10)], pch = 16, color="steelblue")
+
+scatterplot3d(braga[,c(9,6,10)], pch = 16, color = "steelblue", grid=TRUE, box=FALSE)
+
+scatterplot3d(braga[,c(9,6,10)], pch = 16, color = "steelblue", grid=FALSE, box=FALSE)
+```
+# ajustando um modelo com 2 preditores (Carga e Peso):
+
+```{r}
+model.braga2 <-  lm(VO2 ~ Carga + Peso, data = braga)
 summary(model.braga2)
 ```
+# ajustando um modelo com 5 preditores (Carga, Peso, Altura, Idade, IMC):
+
+```{r}
+model.braga5 <-  lm(VO2 ~ Carga + Peso + Altura + Idade + IMC, data = braga)
+summary(model.braga5)
+```
+## Variáveis qualitativas
+# Ajustando um modelo com dois preditores (Carga e Sexo)
+Sexo já foi codificado.
+```{r}
+model.bragaq <-  lm(VO2 ~ Carga + Sexo.cod, data = braga)
+summary(model.bragaq)
+```
+
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
